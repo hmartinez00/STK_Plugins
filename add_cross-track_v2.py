@@ -6,7 +6,7 @@ from comtypes.gen import STKObjects
 # ========================= CONFIGURACIÓN =========================
 RUTA_SENSOR = "*/Satellite/VRSS-2/Sensor/V2-10"
 PREFIJO_CHAIN = "Chain"
-step_time = 30.0
+step_time = 10.0
 
 output_file = f"VRSS2_Roll_Analysis_{datetime.now().strftime('%Y%m%d_%H%M')}.xlsx"
 # ============================================================
@@ -105,6 +105,11 @@ for chain_obj in chains:
 if all_data:
     final_df = pd.concat(all_data, ignore_index=True)
 
+    # === NUEVO: seleccionar, por cada Target, el registro de mínimo Range ===
+    idx_min_range = final_df.groupby('Target')['Range_km'].idxmin()
+    optimal_df = final_df.loc[idx_min_range].sort_values('Range_km').reset_index(drop=True)
+    # ========================================================================
+
     summary = final_df.groupby('Target').agg({
         'CrossTrack_Roll_deg': ['min', 'max', 'mean'],
         'AlongTrack_deg': ['min', 'max'],
@@ -114,6 +119,7 @@ if all_data:
 
     with pd.ExcelWriter(output_file) as writer:
         final_df.to_excel(writer, sheet_name="Detailed", index=False)
+        optimal_df.to_excel(writer, sheet_name="Optimal_per_Target", index=False)
         summary.to_excel(writer, sheet_name="Summary")
 
     print(f"\n¡ÉXITO! Archivo creado: {output_file}")
