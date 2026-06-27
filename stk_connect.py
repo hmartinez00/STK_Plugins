@@ -14,38 +14,39 @@ def crear_target_perfecto_connect():
         escenario_nombre = mi_escenario.InstanceName
         nombre_target = "caracas_Test"
         
-        print(f"¡Conectado con éxito al escenario: '{escenario_nombre}'!")
+        # Ruta del objeto (para Unload, SetPosition, etc.)
+        ruta_stk_objeto = f"*/Target/{nombre_target}"
+        
+        print(f"¡Conectado con éxito al escenario: '{escenario_nombre}'!\n")
 
-        # 2. LIMPIEZA: Usamos el nombre EXPLÍCITO del escenario en lugar de */
-        for clase_obj in ["Target", "Facility", "Sensor"]:
-            try:
-                # Ruta explícita: NombreEscenario/Clase/NombreObjeto
-                root.ExecuteCommand(f"Unload / {escenario_nombre}/{clase_obj}/{nombre_target}")
-                print(f"-> Limpiado residuo de tipo '{clase_obj}'.")
-            except:
-                # Si no existía, STK lanza error y lo ignoramos
-                pass
+        # 2. LIMPIEZA: Eliminamos residuos previos si existen
+        cmd_unload = f"Unload / {ruta_stk_objeto}"
+        print(f"[CMD] {cmd_unload}")
+        try:
+            root.ExecuteCommand(cmd_unload)
+            print("-> Limpiado residuo previo.\n")
+        except:
+            print("-> No había residuo previo.\n")
 
-        # 3. CREACIÓN: Usamos la ruta explícita
-        # Sintaxis correcta: NewObj / <RutaEscenario>/Target <Nombre>
-        print(f"Creando el Target '{nombre_target}' vía Connect...")
-        root.ExecuteCommand(f"NewObj / {escenario_nombre}/Target {nombre_target}")
+        # 3. CREACIÓN: sintaxis correcta -> New / <Path_Padre> <Nombre>
+        cmd_new = f"New / */Target {nombre_target}"
+        print(f"[CMD] {cmd_new}")
+        root.ExecuteCommand(cmd_new)
+        print("-> Target creado exitosamente.\n")
 
-        # 4. POSICIONAMIENTO: Coordenadas geodésicas de Caracas
+        # 4. POSICIONAMIENTO
         latitud = 10.5000
         longitud = -66.9000
-        altitud = 0.0  # En kilómetros
+        altitud = 0.0  
         
-        # Ruta explícita para SetPosition (OJO: SetPosition no lleva barra / después del nombre del comando)
-        comando_posicion = f"SetPosition {escenario_nombre}/Target/{nombre_target} Geodetic {latitud} {longitud} {altitud}"
+        cmd_pos = f"SetPosition {ruta_stk_objeto} Geodetic {latitud} {longitud} {altitud}"
+        print(f"[CMD] {cmd_pos}")
+        root.ExecuteCommand(cmd_pos)
         
-        print(f"Configurando coordenadas geodésicas...")
-        root.ExecuteCommand(comando_posicion)
-        
-        print(f"¡Target '{nombre_target}' creado y ubicado exitosamente en Caracas!")
+        print(f"\n¡ÉXITO TOTAL! Target '{nombre_target}' creado y ubicado en Caracas.")
         
     except Exception as e:
-        print(f"Error en la operación: {e}")
+        print(f"\n[ERROR FATAL] {e}")
 
 # Ejecutar el script
 crear_target_perfecto_connect()
