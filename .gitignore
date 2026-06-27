@@ -1,3 +1,5 @@
 .env/
 files/
 sismo7/
+*.csv
+*.xlsx
