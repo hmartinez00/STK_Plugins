@@ -4,3 +4,7 @@ sismo7/
 *.csv
 *.xlsx
 *.zip
+build/
+dist/
+*.exe
+*.spec
