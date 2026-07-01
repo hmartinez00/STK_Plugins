@@ -9,4 +9,5 @@ dist/
 *.exe
 *.spec
 *.EPH
-targets.csv
+targets.
+!targets_ejemplo.csv
