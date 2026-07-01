@@ -9,3 +9,4 @@ dist/
 *.exe
 *.spec
 *.EPH
+targets.csv
