@@ -50,6 +50,23 @@ Este script procesa salidas de accesos y ángulos de STK para identificar el mej
 - genera un resumen con el mejor tiempo y los valores angulares asociados,
 - exporta el resultado a un archivo Excel.
 
+#### Generación de Reporte de Ángulos Satelitales en STK
+
+Sigue estos pasos generales para calcular y extraer los ángulos de acceso (Along Track y Cross Track) entre un satélite y un objetivo en STK:
+
+1. **Iniciar el análisis de acceso**: Abre la herramienta **Access Tool** en el objeto satélite deseado y selecciona el objeto objetivo (*target*) de interés (por ejemplo, una instalación, región u otro satélite).
+2. **Calcular acceso**: Haz clic en el botón **Compute** para calcular los intervalos de acceso entre los objetos.
+3. **Abrir el gestor de reportes**: En la ventana de *Access*, navega a la sección **Reports** y haz clic en el botón **Report & Graph Manager...**.
+4. **Editar el estilo de reporte**: En el *Report & Graph Manager*, selecciona el estilo de reporte **Access**, haz clic derecho sobre él y elige **Properties** (o **Edit**).
+5. **Seleccionar el proveedor de datos**: En la ventana de *Data Providers*, busca y agrega el proveedor **Sat Angles Data** (o el proveedor de datos angulares que requieras).
+6. **Configurar las variables**: Dentro del proveedor de datos seleccionado, marca los elementos específicos que deseas exportar, tales como:
+   - **Time**
+   - **Along Track**
+   - **Cross Track**
+   - **Range**
+7. **Generar el reporte**: Haz clic en **OK** para guardar la configuración de los datos y luego en **Generate** para crear el reporte.
+8. **Interpretar los resultados**: Revisa la tabla generada. Esta contendrá los parámetros seleccionados, donde el valor **Cross Track** sirve como aproximación del ángulo de *roll* del satélite respecto al objetivo.
+
 #### Uso típico
 Se utiliza cuando se quiere obtener una vista más compacta y útil de los accesos, destacando el momento más favorable de observación o cobertura.
 
